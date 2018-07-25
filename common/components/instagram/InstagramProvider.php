@@ -1,12 +1,13 @@
 <?php
 
 namespace common\components\instagram;
-class BaseInstagramRequest
+
+class InstagramProvider
 {
     const INSTAGRAM_URL = 'https://i.instagram.com/api/v1/';
     const USER_AGENT = 'Instagram 6.21.2 Android (19/4.4.2; 480dpi; 1152x1920; Meizu; MX4; mx4; mt6595; en_US)';
 
-    public function createRequest($url, $options)
+    public function request($url, $options)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::INSTAGRAM_URL . $url);

@@ -10,19 +10,23 @@ class InstagramManager
     const SIGNATURE = '25eace5393646842f0d0c3fb2ac7d3cfa15c052436ee86b5406a8433f54d24a5';
 
     /**
-     * @var BaseInstagramRequest
+     * @var InstagramProvider
+     * Instagram provider object
      */
     private $request;
     /**
      * @var string
+     * Logged user id
      */
     private $uid;
     /**
      * @var string
+     * Generated guid
      */
     private $guid;
     /**
      * @var string
+     * Emulated device
      */
     private $deviceId;
 
@@ -31,13 +35,13 @@ class InstagramManager
      */
     public function __construct()
     {
-        $this->request = new BaseInstagramRequest();
+        $this->request = new InstagramProvider();
         $this->login();
     }
 
     /**
      * Generate guid for Instagram login
-     * @return string
+     * @return string Generated Guid
      */
     private function generateGuid() {
         return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -54,7 +58,7 @@ class InstagramManager
     /**
      * Generate signature for Instagram login
      * @param $data
-     * @return string
+     * @return string generated signature
      */
     private function generateSignature($data) {
         return hash_hmac('sha256', $data, self::SIGNATURE);
@@ -71,7 +75,7 @@ class InstagramManager
         $options['postData'] = 'signed_body='.$sig.'.'.urlencode($json).'&ig_sig_key_version=6';
         $options['post'] = true;
         $options['cookies'] = false;
-        $myid = $this->request->createRequest('accounts/login/', $options);
+        $myid = $this->request->request('accounts/login/', $options);
         $decode = json_decode($myid[1], true);
         $this->uid = $decode['logged_in_user']['pk'];
     }
@@ -79,7 +83,7 @@ class InstagramManager
     /**
      * Search instagram photos by tag
      * @param $tag string
-     * @return array
+     * @return array Found photos
      */
     public function getPhotosByTag($tag)
     {
@@ -88,6 +92,6 @@ class InstagramManager
         $options['postData'] = 'signed_body='.$sig.'.'.urlencode($data).'&ig_sig_key_version=6';
         $options['post'] = true;
         $options['cookies'] = true;
-        return $this->request->createRequest('feed/tag/'.$tag.'/', $options);
+        return $this->request->request('feed/tag/'.$tag.'/', $options);
     }
 }
