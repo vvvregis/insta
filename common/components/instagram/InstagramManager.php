@@ -5,8 +5,8 @@ namespace common\components\instagram;
 class InstagramManager
 {
 
-    const USERNAME = '';
-    const PASSWORD = '';
+    const USERNAME = 'vikovarro';
+    const PASSWORD = 'karl!1390';
     const SIGNATURE = '25eace5393646842f0d0c3fb2ac7d3cfa15c052436ee86b5406a8433f54d24a5';
 
     /**
@@ -29,6 +29,12 @@ class InstagramManager
      * Emulated device
      */
     private $deviceId;
+
+    /**
+     * @var string
+     * tag for search photos
+     */
+    private $searchTag;
 
     /**
      * InstagramManager constructor.
@@ -82,16 +88,24 @@ class InstagramManager
 
     /**
      * Search instagram photos by tag
-     * @param $tag string
      * @return array Found photos
      */
-    public function getPhotosByTag($tag)
+    public function getPhotosByTag()
     {
-        $data = '{"device_id":"'.$this->deviceId.'","guid":"'. $this->guid .'","timezone_offset":"43200","uid":"'.$this->uid.'","q":"'.$tag.'","count":"500","source_type":"5","filter_type":"0","extra":"{}","Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"}';
+        $data = '{"device_id":"'.$this->deviceId.'","guid":"'. $this->guid .'","timezone_offset":"43200","uid":"'.$this->uid.'","q":"'.$this->searchTag.'","count":"500","source_type":"5","filter_type":"0","extra":"{}","Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"}';
         $sig = $this->generateSignature($data);
         $options['postData'] = 'signed_body='.$sig.'.'.urlencode($data).'&ig_sig_key_version=6';
         $options['post'] = true;
         $options['cookies'] = true;
-        return $this->request->request('feed/tag/'.$tag.'/', $options);
+        return $this->request->request('feed/tag/'.$this->searchTag.'/', $options);
+    }
+
+    /**
+     * @param $tag
+     *  searchTag setter
+     */
+    public function setSearchTag($tag)
+    {
+        $this->searchTag = $tag;
     }
 }
