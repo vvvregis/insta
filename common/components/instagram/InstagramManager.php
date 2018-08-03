@@ -37,6 +37,12 @@ class InstagramManager
     private $searchTag;
 
     /**
+     * @var string
+     * create/delete friendship user id
+     */
+    private $userId;
+
+    /**
      * InstagramManager constructor.
      */
     public function __construct()
@@ -107,5 +113,40 @@ class InstagramManager
     public function setSearchTag($tag)
     {
         $this->searchTag = $tag;
+    }
+
+    /**
+     * @return array
+     * create friendship method
+     */
+    public function createFriendship() {
+        $data = '{"device_id":"'.$this->deviceId.'","guid":"'. $this->guid .'","uid":"'.$this->uid.'","module_name":"feed_timeline","user_id":"'.$user_id.'","source_type":"5","filter_type":"0","extra":"{}","Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"}';
+        $sig = $this->generateSignature($data);
+        $options['postData'] = 'signed_body='.$sig.'.'.urlencode($data).'&ig_sig_key_version=6';
+        $options['post'] = true;
+        $options['cookies'] = true;
+        return $this->request->request('friendships/create/'.$this->userId.'/', $options);
+    }
+
+    /**
+     * @return array
+     * delete friendship method
+     */
+    public function deleteFriendship() {
+        $data = '{"device_id":"'.$this->deviceId.'","guid":"'. $this->guid .'","uid":"'.$this->uid.'","module_name":"feed_timeline","user_id":"'.$user_id.'","source_type":"5","filter_type":"0","extra":"{}","Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"}';
+        $sig = $this->GenerateSignature($data);
+        $options['postData'] = 'signed_body='.$sig.'.'.urlencode($data).'&ig_sig_key_version=6';
+        $options['post'] = true;
+        $options['cookies'] = true;
+        return $this->request->request('friendships/create/'.$this->userId.'/', $options);
+    }
+
+    /**
+     * @param $userId
+     * user id setter
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
     }
 }
