@@ -5,8 +5,8 @@ namespace common\components\instagram;
 class InstagramManager
 {
 
-    const USERNAME = 'vikovarro';
-    const PASSWORD = 'karl!1390';
+    const USERNAME = 'login';
+    const PASSWORD = 'pass';
     const SIGNATURE = '25eace5393646842f0d0c3fb2ac7d3cfa15c052436ee86b5406a8433f54d24a5';
 
     /**
